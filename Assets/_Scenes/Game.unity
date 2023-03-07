@@ -259,7 +259,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516974389}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -321,8 +321,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516974389}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.04915, y: -5.6439114, z: -0.48453665}
-  m_LocalScale: {x: 16.093712, y: 2.785894, z: 11.282682}
+  m_LocalPosition: {x: -9.04915, y: -5.6593, z: -0.48453665}
+  m_LocalScale: {x: 16.093712, y: 3.3323689, z: 11.282682}
   m_Children: []
   m_Father: {fileID: 1293530661}
   m_RootOrder: 1
@@ -868,6 +868,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _loudspeaker: {fileID: 1568366147}
   _protectionCircuit: {fileID: 516974393}
+  maxVolume: 1
+  fadeSpeed: 1
 --- !u!4 &1293530661
 Transform:
   m_ObjectHideFlags: 0
