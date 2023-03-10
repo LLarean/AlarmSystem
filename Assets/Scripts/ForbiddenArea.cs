@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ProtectionCircuit : MonoBehaviour
+public class ForbiddenArea : MonoBehaviour
 {
     private UnityEvent _disturbed = new UnityEvent();
     private UnityEvent _abandoned = new UnityEvent();
@@ -19,13 +19,11 @@ public class ProtectionCircuit : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter");
         _disturbed?.Invoke();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("OnTriggerExit");
         _abandoned?.Invoke();
     }
 }

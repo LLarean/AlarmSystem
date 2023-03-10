@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 516974391}
   - component: {fileID: 516974390}
   m_Layer: 0
-  m_Name: ProtectedArea
+  m_Name: ForbiddenArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 516974389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e09fea4abe04fde44bbaa7a34cf5d1d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 2427a7e27c3bed742a34c8e2794659b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &516974394
@@ -848,7 +848,7 @@ GameObject:
   - component: {fileID: 1293530661}
   - component: {fileID: 1293530660}
   m_Layer: 0
-  m_Name: AlarmSystem
+  m_Name: Signalization
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -867,9 +867,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loudspeaker: {fileID: 1568366147}
-  _protectionCircuit: {fileID: 516974393}
-  maxVolume: 1
-  fadeSpeed: 1
+  _forbiddenArea: {fileID: 516974393}
+  _maximumVolume: 1
+  _minimumVolume: 0
+  _fadeSpeed: 1
 --- !u!4 &1293530661
 Transform:
   m_ObjectHideFlags: 0
