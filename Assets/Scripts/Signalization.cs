@@ -1,16 +1,16 @@
 using UnityEngine;
-using System.Collections;
 
 public class Signalization : MonoBehaviour
 {
     [SerializeField] private AudioSource _loudspeaker;
     [SerializeField] private ForbiddenArea _forbiddenArea;
     
+    [Space]
     [SerializeField] private float _maximumVolume = 1f;
     [SerializeField] private float _minimumVolume = 0f;
-    [SerializeField] private float _fadeSpeed = 1f;
-
-    private Coroutine _fadeSound;
+    [SerializeField] private float _fadeSpeed = .1f;
+    
+    private float _targetVolume = 0f;
 
     private void Awake()
     {
@@ -24,44 +24,35 @@ public class Signalization : MonoBehaviour
         _forbiddenArea.Abandoned.RemoveListener(StopSiren);
     }
 
+    private void Update()
+    {
+        if (_loudspeaker.volume == _targetVolume)
+        {
+            return;
+        }
+
+        bool isPlaying = true;
+        
+        if (_loudspeaker.isPlaying != isPlaying && _targetVolume == _maximumVolume)
+        {
+            _loudspeaker.Play();
+        }
+        
+        _loudspeaker.volume = Mathf.MoveTowards(_loudspeaker.volume, _targetVolume, _fadeSpeed * Time.deltaTime);
+
+        if (_loudspeaker.isPlaying == isPlaying && _loudspeaker.volume == _minimumVolume)
+        {
+            _loudspeaker.Stop();
+        }
+    }
+
     private void StartSiren()
     {
-        StopFadeSound();
-        _fadeSound = StartCoroutine(FadeSound(_maximumVolume, _fadeSpeed));
+        _targetVolume = _maximumVolume;
     }
 
     private void StopSiren()
     {
-        StopFadeSound();
-        _fadeSound = StartCoroutine(FadeSound(_minimumVolume, -_fadeSpeed));
-    }
-
-    private void StopFadeSound()
-    {
-        if (_fadeSound != null)
-        {
-            StopCoroutine(_fadeSound);
-        }
-    }
-    
-    private IEnumerator FadeSound(float targetVolume, float fadeSpeed)
-    {
-        if (targetVolume == _maximumVolume && _loudspeaker.isPlaying == false)
-        {
-            _loudspeaker.Play();
-        }
-
-        while (_loudspeaker.volume != targetVolume)
-        {
-            _loudspeaker.volume += fadeSpeed * Time.deltaTime;
-            yield return null;
-        }
-
-        if (targetVolume == _minimumVolume)
-        {
-            _loudspeaker.Stop();
-        }
-        
-        _fadeSound = null;
+        _targetVolume = _minimumVolume;
     }
 }
