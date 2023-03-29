@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Signalization : MonoBehaviour
 {
@@ -10,49 +11,39 @@ public class Signalization : MonoBehaviour
     [SerializeField] private float _minimumVolume = 0f;
     [SerializeField] private float _fadeSpeed = .1f;
     
-    private float _targetVolume = 0f;
+    private IEnumerator _coroutine;
 
     private void Awake()
     {
-        _forbiddenArea.Disturbed.AddListener(StartSiren);
-        _forbiddenArea.Abandoned.AddListener(StopSiren);
+        _forbiddenArea.Disturbed.AddListener(delegate { FadeVolume(_maximumVolume); });
+        _forbiddenArea.Abandoned.AddListener(delegate { FadeVolume(_minimumVolume); });
     }
 
     private void OnDestroy()
     {
-        _forbiddenArea.Disturbed.RemoveListener(StartSiren);
-        _forbiddenArea.Abandoned.RemoveListener(StopSiren);
+        _forbiddenArea.Disturbed.RemoveListener(delegate { FadeVolume(_maximumVolume); });
+        _forbiddenArea.Abandoned.RemoveListener(delegate { FadeVolume(_minimumVolume); });
     }
 
-    private void Update()
+    private void FadeVolume(float targetVolume)
     {
-        if (_loudspeaker.volume == _targetVolume)
+        if (_coroutine != null)
         {
-            return;
+            StopCoroutine(_coroutine);
         }
-
-        bool isPlaying = true;
-        
-        if (_loudspeaker.isPlaying != isPlaying && _targetVolume == _maximumVolume)
-        {
-            _loudspeaker.Play();
-        }
-        
-        _loudspeaker.volume = Mathf.MoveTowards(_loudspeaker.volume, _targetVolume, _fadeSpeed * Time.deltaTime);
-
-        if (_loudspeaker.isPlaying == isPlaying && _loudspeaker.volume == _minimumVolume)
-        {
-            _loudspeaker.Stop();
-        }
+     
+        _coroutine = ChangeVolume(targetVolume);
+        StartCoroutine(_coroutine);
     }
-
-    private void StartSiren()
+    
+    private IEnumerator ChangeVolume(float targetVolume)
     {
-        _targetVolume = _maximumVolume;
-    }
+        while(_loudspeaker.volume != targetVolume)
+        {
+            _loudspeaker.volume = Mathf.MoveTowards(_loudspeaker.volume, targetVolume, _fadeSpeed * Time.deltaTime);
+            yield return Time.deltaTime;
+        }
 
-    private void StopSiren()
-    {
-        _targetVolume = _minimumVolume;
+        _coroutine = null;
     }
 }

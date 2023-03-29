@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class ForbiddenArea : MonoBehaviour
 {
+    private string _alarmTargetName = "Thief";
     private UnityEvent _disturbed = new UnityEvent();
     private UnityEvent _abandoned = new UnityEvent();
     
@@ -17,13 +18,20 @@ public class ForbiddenArea : MonoBehaviour
         get => _abandoned;
         set => _abandoned = value;
     }
+    
     private void OnTriggerEnter(Collider other)
     {
-        _disturbed?.Invoke();
+        if (other.name == _alarmTargetName)
+        {
+            _disturbed?.Invoke();
+        }
     }
-
+    
     private void OnTriggerExit(Collider other)
     {
-        _abandoned?.Invoke();
+        if (other.name == _alarmTargetName)
+        {
+            _abandoned?.Invoke();
+        }
     }
 }
